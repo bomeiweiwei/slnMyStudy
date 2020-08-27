@@ -1,0 +1,585 @@
+﻿@model slnMyStudy.Models.ViewModel.TestViewModel
+
+@{
+    ViewBag.Title = "Grid修改與編輯";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .my-error-class {
+        color: #FF0000; /* red */
+    }
+
+    /*.my-valid-class {
+        color: #00CC00;*/ /* green */
+    /*}*/
+</style>
+
+<form id="myForm">
+    <div class="row">
+        <div class="col-xs-12 col-sm-12">
+            @*<button type="button" class="btn-info" onclick="funTmpSaveData()">暫存</button>*@
+            <button type="button" id="btn_Update" onclick="funSaveData()">更新</button>
+        </div>
+    </div>
+    <hr/>
+    <div class="row">
+        <div class='col-xs-12 col-sm-6'>
+            <div class="form-group">
+                @Html.Label("欄位一", new { @class = "col-xs-12 col-sm-4 control-label" })
+                <div class="col-xs-12 col-sm-4 ">
+                    @Html.TextBox("TxtBox1", "", new { @class = "form-control", id = "TxtBox1" })
+                </div>
+            </div>
+        </div>
+        <div class='col-xs-12 col-sm-6'>
+            <div class="form-group">
+                @Html.Label("*欄位二", new { @class = "col-xs-12 col-sm-4 control-label" })
+                <div class="col-xs-12 col-sm-4 ">
+                    @Html.TextBox("TxtBox2", "", new { @class = "form-control", id = "TxtBox2" })
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="col-xs-12 col-sm-12">
+            <div class="form-group">
+                @Html.Label("*欄位三", new { @class = "col-xs-12 col-sm-4 control-label" })
+                <div class="col-xs-12 col-sm-8 ">
+                    <textarea id="TxtArea" name="TxtArea" rows="4" cols="50" class="k-textbox"></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12 col-sm-12">
+            <h5 class="bg-info text-center p-3">Grid</h5>
+            <div id="grid3"></div>
+            <span id="spanChk_test" style="color: red;display:none">Grid資訊必填</span>
+        </div>
+        <div id="hidDivData">
+            @Html.Hidden("_testData", "", new { id = "_testData" })
+            <div id="hidFileDiv" style="display:none">
+                <input id="targetFiles" name="targetFiles" type="file" />
+            </div>
+        </div>
+    </div>
+</form>
+
+@section scripts{
+    <script type="text/javascript">
+        function funSaveData() {
+            ElementsValidAdd();
+            ChkInputVal();
+        }
+
+        //暫存
+        function funTmpSaveData() {
+            ElementsValidRemove();
+            DoSave();
+        }
+
+        //日期轉換
+        Object.defineProperty(Date.prototype, 'YYYYMMDDHHMMSS', {
+            value: function () {
+                function pad2(n) {  // always returns a string
+                    return (n < 10 ? '0' : '') + n;
+                }
+
+                return this.getFullYear() + '/' +
+                    pad2(this.getMonth() + 1) + '/' +
+                    pad2(this.getDate()) + ' ' +
+                    pad2(this.getHours()) + ':' +
+                    pad2(this.getMinutes()) + ':' +
+                    pad2(this.getSeconds());
+            }
+        });
+
+        function getFormData(grid) {
+            var formObject = {};
+            var columns = grid.columns;
+            if (columns.length > 0) {
+                for (var i = 0; i < columns.length; i++) {
+                    var col = columns[i];
+                    if (col.field != undefined) {
+                        formObject[col.field] = null;
+                    }
+                }
+            }
+            return formObject;
+        }
+
+        function dateTimeEditor(container, options) {
+            $('<input data-text-field="' + options.field + '" data-value-field="' + options.field + '" data-bind="value:' + options.field + '" data-format="' + options.format + '"/>')
+                .appendTo(container)
+                .kendoDateTimePicker({});
+        }
+
+        function isValidDate(date) {
+            return date && Object.prototype.toString.call(date) === "[object Date]" && !isNaN(date);
+        }
+
+        function FormConditionsToObj(id) {
+            var searchData = {};
+
+            var a = $(id).serializeArray();
+            $.each(a, function () {
+                if (searchData[this.name]) {
+                    if (!searchData[this.name].push) {
+                        searchData[this.name] = [searchData[this.name]];
+                    }
+                    searchData[this.name].push(this.value || '');
+                } else {
+                    searchData[this.name] = this.value || '';
+                }
+            });
+            return searchData;
+        }
+
+        //dataSource
+        var apiUrl = '@Url.HttpRouteUrl("ServiceAreaApi", new { controller= "TestService", action= "TestDataSearch" })';
+        var dataSource = new kendo.data.DataSource({
+            transport: {
+                read: function (options) {
+                    //options.success(JSON.parse($('#_testData').val()));
+                    $.ajax({
+                        url: apiUrl,
+                        type: 'POST',
+                        data: dsAdditionalParam(),
+                        dataType: "json",
+                        success: function (result) {
+                            options.success(result);
+                        },
+                        error: function (result) {
+                            options.error(result);
+                        }
+                    });
+                },
+                update: function (e) {
+                    e.success();
+                },
+                destroy: function (e) {
+                    e.success();
+                },
+                create: function (e) {
+                    var item = e.data;
+                    e.success(item);
+                }
+            },
+            schema: {
+                model: {
+                    id: 'id',
+                    fields: {
+                        class: {
+                            defaultValue: { Param_Value: "科技", Param_Note: "科技" }
+                        },
+                        test_time: { type: "date", validation: { required: { message: "請輸入時間" } } },
+                        title: { type: "string", validation: { required: { message: "請輸入資料" } } },
+                        summary: { type: "string", validation: { required: { message: "請輸入資料" } } },
+                        article: { type: "string", validation: { required: { message: "請輸入資料" } } },
+                        author: { type: "string", validation: { required: { message: "請輸入資料" } } }
+                    }
+                }
+            },
+            pageSize: 10,
+        });
+
+        //Grid查詢參數
+        function dsAdditionalParam() {
+            return {
+                searchClassName: '',
+                searchTest_time: '@DateTime.Now.AddDays(-7).ToString("yyyy-MM-dd")',
+                searchTitle: '',
+            }
+        }
+
+        //初始化Grid
+        function initGrid3() {
+            var grid;
+            grid = $('#grid3').kendoGrid({
+                dataSource: dataSource,
+                groupable: false,
+                sortable: true,
+                filterable: false,
+                resizable: true,
+                pageable: false,
+                noRecords: {
+                    template: "<em>查無符合資料!</em>"
+                },
+                error: function (e) {
+                    // handle error
+                    console.log("Status: " + e.status + "; Error message: " + e.errorThrown);
+                },
+                toolbar: [
+                    { name: "create", text: "新增" },
+                    { name: "deleteParam", text: "刪除" },
+                    { name: "import", text: "匯入" },
+                    { name: "downloadSample", text: "範本下載" },
+                ],
+                columns: [
+                    {
+                        template: '<center><input type="checkbox" name="SelectTest" class="chkSelectAll"/></center>',
+                        headerTemplate: '<div class="text-center"><input type="checkbox" chkSelectClass="chkSelectAll" onclick="SelectAll(this,\'SelectTest\')"/></div>',
+                        sortable: false,
+                        width: "5%"
+                    },
+                    { hidden: true, field: "id" },
+                    {
+                        field: "test_time", title: "時間", width: "100px", attributes: { "class": "text-center" },
+                        //template && format 搭配，存檔時日期格式不會第二筆就亂掉，Save時將日期格式轉換存入hidden免得存檔才轉日期發生錯誤
+                        //糞
+                        template: "#= kendo.toString(kendo.parseDate(test_time), 'yyyy/MM/dd hh:mm') #",
+                        format: "{0:yyyy/MM/dd HH:mm}",
+                        editor: dateTimeEditor,
+                        width: "20%"
+                    },
+                    //{ field: 'class', title: '類別', encoded: false, attributes: { style: "text-align:center;" } },
+                    {
+                        field: "class",
+                        editor: ClassDropDownEditor,
+                        template: function (e) {
+                            if (e.class.hasOwnProperty("Param_Note")) {
+                                return e.class.Param_Note;
+                            } else {
+                                return e.class;
+                            }
+                        },
+                        title: "類別", width: "15%", attributes: { "class": "text-center" }
+                    },
+                    { field: 'title', title: '標題', encoded: false, attributes: { style: "text-align:center;" } },
+                    { field: 'summary', title: '摘要', encoded: false, attributes: { style: "text-align:center;" } },
+                    { field: 'article', title: '文章', encoded: false, attributes: { style: "text-align:center;" } },
+                    { field: 'author', title: '作者', encoded: false, attributes: { style: "text-align:center;" } },
+                    {
+                        command: [
+                            {
+                                name: "edit",
+                                text: {
+                                    edit: "編輯",
+                                    update: "更新",
+                                    cancel: "取消",
+                                },
+                            },
+                        ],
+                        title: "&nbsp;",
+                        width: "20%"
+                    }
+                ],
+                editable: {
+                    mode: "inline",
+                    confirmation: false
+                },
+                dataBound: function (e) {
+                    $(".k-grid-deleteParam").click(function (e) {
+                        funSelectDelete('grid3', '_testData', 'SelectTest');
+                    });
+                    $('.k-grid-add').show();
+                    $('.k-grid-deleteParam').show();
+                    $('.k-grid-edit').show();
+                },
+                edit: function (e) { },
+                save: function (e) {
+                    var grid1 = $('#grid3').data('kendoGrid');
+                    var formObject = getFormData(grid1);
+                    formObject.id = e.model.id;
+                    if (isValidDate(e.model.test_time)) {
+                        //儲存時直接轉換格式存入hidden
+                        formObject.test_time = e.model.test_time.YYYYMMDDHHMMSS();
+                    } else {
+                        formObject.test_time = new Date(e.model.test_time).YYYYMMDDHHMMSS();
+                    }
+                    formObject.class = e.model.class;
+                    formObject.title = e.model.title;
+                    formObject.summary = e.model.summary;
+                    formObject.article = e.model.article;
+                    formObject.author = e.model.author;
+                    //debugger;
+                    var sObject = JSON.parse($('#_testData').val());
+                    if (e.model.id) {
+                        var indexes = $.map(sObject, function (item, index) {
+                            if (item.id == formObject.id) {
+                                return index;
+                            }
+                        })
+                        sObject[indexes[0]] = formObject; //修改
+                    } else {
+                        formObject.id = (sObject.length + 1) * -1;
+                        sObject.push(formObject);   //新增
+                    }
+
+                    $("#_testData").val(JSON.stringify(sObject));
+                    grid1.dataSource.data(sObject);
+                },
+                cancel: function (e) {
+                    var sObject = JSON.parse($('#_testData').val());
+                    $("#_testData").val(JSON.stringify(sObject));
+                    grid.dataSource.data(sObject);
+                },
+            }).data('kendoGrid');
+
+            initTooltip(grid);
+
+            //grid資料匯入
+            grid.element.find(".k-grid-import").bind('click', function () {
+                $("#targetFiles").click();
+
+            });
+            grid.element.find(".k-grid-downloadSample").bind('click', function () {
+                var postFormStr = "<form target='_blank' method='POST' action='@Url.Action("DownloadExample")'></form>";
+                var formElement = $(postFormStr);
+
+                $('body').append(formElement);
+                $(formElement).submit();
+            });
+        }
+
+        //下拉選單
+        function ClassDropDownEditor(container, options) {
+            $('<input required name="' + options.field + '"/>')
+                .appendTo(container)
+                .kendoDropDownList({
+                    autoBind: false,
+                    dataTextField: "Param_Note",
+                    dataValueField: "Param_Value",
+                    dataSource: {
+                        transport: {
+                            read: {
+                                type: "POST",
+                                data: { pName: "class" },
+                                url: "@Url.Action("GetClassParam")",
+                                dataType: 'json'
+                            }
+                        }
+                    },
+                });
+        }
+
+        //grid資料列全選
+        function SelectAll(obj, selName) {
+            if (obj.checked) {
+                $('input[name="' + selName + '"]').prop("checked", true);
+            } else {
+                $('input[name="' + selName + '"]').prop("checked", false);
+            }
+        }
+
+        //刪除被選欄位
+        function funSelectDelete(gridID, hideID, selName) {
+            var ParamObject = JSON.parse($('#' + hideID).val());
+            $('input[name=' + selName + ']:checked').each(function () {
+                var $tr = $(this).closest("tr"),
+                    grid = $("#" + gridID).data("kendoGrid");
+
+                var index = 0;
+                var dataItem = grid.dataItem($tr);
+                for (var i = 0; i < ParamObject.length; i++) {
+                    //針對PK名稱
+                    if (ParamObject[i].hasOwnProperty('id')) {
+                        if (ParamObject[i].id == dataItem.id) {
+                            index = i;
+                            break;
+                        }
+                    }
+                }
+                ParamObject.splice(index, 1);//刪除
+            });
+            $("#" + hideID).val(JSON.stringify(ParamObject));
+            var grid = $('#' + gridID).data('kendoGrid');
+            grid.dataSource.data(ParamObject);
+        }
+
+        //grid提示
+        function initTooltip(grid) {
+             grid.thead.kendoTooltip({
+                filter: "th",
+                content: function (e) {
+                    var target = e.target; // element for which the tooltip is shown
+                    return $(target).text();
+                }
+            });
+        }
+
+        function initHidData() {
+            $.ajax({
+                url: apiUrl,
+                type: 'POST',
+                data: dsAdditionalParam(),
+                dataType: "json",
+                async: false,
+                success: function (result) {
+                    var jsonStr = JSON.stringify(result);
+                    $("#_testData").val(jsonStr);
+                },
+                error: function (result) {
+
+                }
+            });
+        }
+
+        //需要檢查的欄位
+        var elemRequiredArr = ["TxtBox2", "TxtArea"];
+        //新增需要動態驗證的欄位
+        function ElementsValidAdd() {
+            $("#myForm").validate({
+                errorClass: "my-error-class",
+                validClass: "my-valid-class"
+            });
+            var errMsg = "此欄位必填";
+            elemRequiredArr.forEach(function (item) {
+                $("#" + item).rules("add", {
+                    required: true,
+                    messages: {
+                        required: errMsg
+                    }
+                });
+            });
+        }
+
+        //刪除需要動態驗證的欄位
+        function ElementsValidRemove() {
+            $("#myForm").validate();
+            elemRequiredArr.forEach(function (item) {
+                $("#" + item).rules("remove");
+            });
+        }
+
+        //需要檢查的hidden
+        var hidCheckArr = ["test"];
+        //檢查輸入
+        function ChkInputVal() {
+            var check = true;
+            //grid check
+            if ($("#grid3").data("kendoGrid").dataSource.data().length == 0) {
+                $("#spanChk_test").css("display", "");
+                check = false;
+            } else {
+                $("#spanChk_test").css("display", "none");
+            }
+            if ($("#myForm").valid()) {
+                //debugger;
+                if (check) {
+                    /*驗證成功，post the form data to server*/
+                    DoSave();
+                }
+            } else {
+                BootstrapDialog.alert({
+                    message: "表單驗證失敗",
+                    type: BootstrapDialog.TYPE_DANGER,
+                    callback: function (result) {
+                    }
+                });
+            }
+        }
+
+        function DoSave() {
+            var obj = $('form').serializeObject();
+            var ParamObject = $("#grid3").data().kendoGrid.dataSource.view();
+            var oBJArr = [];
+            for (var i = 0; i < ParamObject.length; i++) {
+                var oBJ = {
+                    id: ParamObject[i].id,
+                };
+                oBJArr.push(oBJ);
+            }
+            obj["TestIdList"] = oBJArr;
+
+            ParamObject = JSON.parse($("#_testData").val());
+            oBJArr = [];
+            for (var i = 0; i < ParamObject.length; i++) {
+                //日期轉換讓model可讀取
+                var test_time = ParamObject[i].test_time;
+                var objVal = '';
+                if (ParamObject[i].class.hasOwnProperty("Param_Value")) {
+                    objVal = ParamObject[i].class.Param_Value;
+                } else {
+                    objVal = ParamObject[i].class;
+                }
+                var sOBJ = {
+                    id: ParamObject[i].id,
+                    test_time: test_time,
+                    class: objVal,
+                    title: ParamObject[i].title,
+                    summary: ParamObject[i].summary,
+                    article: ParamObject[i].article,
+                    author: ParamObject[i].author
+                };
+                oBJArr.push(sOBJ);
+            }
+            obj["Test_SaveList"] = oBJArr;
+            var strUrl = '@Url.HttpRouteUrl("ServiceAreaApi", new { controller= "TestService", action= "SaveData" })';
+            $.ajax({
+                url: strUrl,
+                data: obj,
+                type: "POST",
+                //contentType: "application/json; charset=utf-8",
+                error: function (xhr, textStatus, errorThrown) {
+                    //Handle the server errors using the approach from the previous example
+                    var jsonResponse = JSON.parse(xhr.responseText);
+                    BootstrapDialog.alert({
+                        message: jsonResponse.Message,
+                        type: BootstrapDialog.TYPE_DANGER,
+                        callback: function (result) {
+                        }
+                    });
+                },
+                success: function (data, textStatus, xhr) {
+                    BootstrapDialog.alert({
+                        message: data,
+                        type: BootstrapDialog.TYPE_INFO ,
+                        callback: function (result) {
+                        }
+                    });
+                },
+                complete: function (XMLHttpRequest, textStatus) {
+                    //不管怎樣最後都會執行這個
+                }
+                //,beforeSend: function (XMLHttpRequest) {//不給beforeSend預設會綁定以下內容
+                //發送請求之前可在此修改XMLHttpRequest物件，如添加header等，你可以在此函式中return flase取消Ajax request。
+                //XMLHttpRequest.setRequestHeader("X-XSRF-Token", $('[name=__RequestVerificationToken]').val());
+                //}
+            });
+        }
+
+        //上傳檔案後的處理
+        function onImportSuccess(e) {
+            var grid = $('#grid3').data('kendoGrid');
+            var sObject = JSON.parse($('#_testData').val());
+            var ParamObject = $("#grid3").data().kendoGrid.dataSource.view();
+            JSON.parse(e.response.Data).forEach(function (item) {
+                var d = new Date(item.test_timeStr);
+                item.test_time = d.YYYYMMDDHHMMSS();
+
+                ParamObject.push(item);
+                sObject.push(item);
+            });
+            $("#_testData").val(JSON.stringify(sObject));
+            grid.dataSource.data(ParamObject);
+        }
+
+        $(function () {
+            initHidData();
+            initGrid3();
+            $("#btn_Update").kendoButton();
+            $("#targetFiles").kendoUpload({
+                async: {
+                    saveUrl: "@Url.Action("FilesUpload")",
+                    removeUrl: "remove",
+                    autoUpload: true
+                },
+                upload: function (e) {
+                    var grid = $("#grid3").data("kendoGrid");
+                    var dataSource = grid.dataSource;
+                    //total records
+                    var totalRecords = dataSource.total();
+                    e.data = { totalRecords: totalRecords };
+                },
+                success: onImportSuccess,
+                error: function (e) {
+                    console.log(e.XMLHttpRequest.response);
+                }
+            });
+        });
+    </script>
+}
+

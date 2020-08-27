@@ -1,0 +1,135 @@
+﻿@using PagedList.Mvc
+@using PagedList
+@model slnMyStudy.Models.ViewModel.ProductsCategoriesViewModel
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<style>
+    .vertical-menu {
+
+    }
+
+    .vertical-menu a {
+        background-color: #eee;
+        color: black;
+        display: block;
+        padding: 12px;
+        text-decoration: none;
+    }
+
+    .vertical-menu a:hover {
+        background-color: #ccc;
+    }
+
+    .vertical-menu a.active {
+        background-color: #4CAF50;
+        color: white;
+    }
+</style>
+<link href="~/Content/PagedList.css" rel="stylesheet" />
+
+@{
+    List<slnMyStudy.Models.Categories> categories = ViewBag.CategoryList;
+    List<slnMyStudy.Models.Suppliers> suppliers = ViewBag.SupplierList;
+}
+<div class="row">
+    <div class="col-sm-12">
+        <h3>商品資訊網頁</h3>
+        <hr />
+        <h5>商品清單、類別、分頁</h5>
+        <hr />
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-2">
+        <div class="vertical-menu">
+            <a href="#" class="active">@Html.DisplayNameFor(m => m.ProductsList.FirstOrDefault().Categories.CategoryName)</a>
+            @foreach (var item in Model.CategoriesList)
+            {
+                @Html.ActionLink(item.CategoryName, "Index", new { catId = item.CategoryID })
+            }
+        </div>        
+    </div>
+    <div class="col-sm-10">
+        <table class="table">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.ProductsList.FirstOrDefault().ProductName)
+                </th>
+                <th style="width:10%">
+                    @Html.DisplayNameFor(model => model.ProductsList.FirstOrDefault().SupplierID)
+                </th>
+                <th style="width:10%">
+                    @Html.DisplayNameFor(model => model.ProductsList.FirstOrDefault().CategoryID)
+                </th>
+                <th style="width:10%">
+                    @Html.DisplayNameFor(model => model.ProductsList.FirstOrDefault().QuantityPerUnit)
+                </th>
+                <th style="width:10%">
+                    @Html.DisplayNameFor(model => model.ProductsList.FirstOrDefault().UnitPrice)
+                </th>
+                @*<th style="width:10%">
+                        @Html.DisplayNameFor(model => model.ProductsList.FirstOrDefault().UnitsInStock)
+                    </th>
+                    <th style="width:10%">
+                        @Html.DisplayNameFor(model => model.ProductsList.FirstOrDefault().UnitsOnOrder)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.ProductsList.FirstOrDefault().ReorderLevel)
+                    </th>*@
+                <th style="width:10%">
+                    @Html.DisplayNameFor(model => model.ProductsList.FirstOrDefault().Discontinued)
+                </th>
+            </tr>
+
+            @foreach (var item in Model.ProductsList)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ProductName)
+                    </td>
+                    <td>
+                        @suppliers.Where(m => m.SupplierID == item.SupplierID).FirstOrDefault().CompanyName
+                    </td>
+                    <td>
+                        @categories.Where(m => m.CategoryID == item.CategoryID).FirstOrDefault().CategoryName
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.QuantityPerUnit)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.UnitPrice)
+                    </td>
+                    @*<td>
+                            @Html.DisplayFor(modelItem => item.UnitsInStock)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.UnitsOnOrder)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ReorderLevel)
+                        </td>*@
+                    <td>
+                        @if (item.Discontinued)
+                        {
+                            @:是
+                        }
+                        else
+                        {
+                            @:否
+                        }
+                    </td>
+                </tr>
+            }
+
+        </table>
+        @Html.PagedListPager(Model.ProductsPageList, page => Url.Action("Index", new { page, @ViewBag.catId }))
+    </div>
+
+</div>
+
+@section scripts{
+
+}

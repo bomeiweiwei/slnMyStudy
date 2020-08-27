@@ -1,0 +1,150 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - 我的 ASP.NET 應用程式</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @Styles.Render("~/Content/kendoCSS")
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/bootstrap")
+    <style>
+        body {
+            padding-top: 70px;
+        }
+
+        .dropright {
+            position: relative;
+        }
+
+            .dropright .dropdown-menu {
+                top: 0;
+                left: 100%;
+                margin-top: -1px;
+            }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+            <a class="navbar-brand" href="@Url.Action("Index", new { Area = "" })">
+                <img src="~/images/bird.jpg" alt="logo" style="width:40px;">
+            </a>
+            <!-- 漢堡選單 -->
+            <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarItem">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarItem">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="@Url.Action("Index","Home", new { Area = "" })">首頁</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">功能</a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="@Url.Action("Index","Demo", new { Area = "" })">MVC</a>
+                            <a class="dropdown-item" href="@Url.Action("Index","BootStrapTest", new { Area = "" })">BootStrap</a>
+                            @*<a class="dropdown-item" href="@Url.Action("Index","KendoUITest", new { Area = "" })">KendoUI</a>*@                           
+                            <a class="dropdown-item" href="@Url.Action("Index","WebApiTest", new { Area = "" })">WebApi</a>
+                            <div class="dropdown-divider"></div>
+                            <div class="dropright">
+                                <button class="btn btn-light dropdown-toggle" data-toggle="dropdown">KendoUI</button>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" href="@Url.Action("Index","KendoUITest", new { Area = "" })">Grid</a>
+                                    <a class="dropdown-item" href="@Url.Action("Query","KendoUITest", new { Area = "" })">QueryGrid</a>
+                                    <a class="dropdown-item" href="@Url.Action("ModifyGrid","KendoUITest", new { Area = "" })">ModifyGrid</a>                                    
+                                </div>
+                            </div>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="@Url.Action("About", "Home", new { Area = "" })">關於</a>
+                        </div>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">系統</a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="@Url.Action("Setting","Home", new { Area = "" })">語系</a>
+                            <a class="dropdown-item" href="@Url.Action("Register","Account", new { Area = "Customer" })">註冊</a>
+                            <a class="dropdown-item" href="@Url.Action("Login","Account", new { Area = "Customer" })">登入</a>
+                        </div>
+                    </li>
+                </ul>
+                <div class="form-inline ml-auto">
+                    @Html.Partial("_LoginPartial")
+                </div>
+                @*<form class="form-inline ml-auto">
+                        <input type="text" name="SearchInfo" id="txtSearch" placeholder="Search">
+                        <button type="submit" class="btn btn-outline-success ml-1">Search</button>
+                    </form>*@
+            </div>
+        </nav>
+    </header>
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - 我的 ASP.NET 應用程式</p>
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/kendoJS")
+    @Scripts.Render("~/bundles/SharedJS")
+    @RenderSection("scripts", required: false)
+
+    <script>
+        $(document).ready(function () {
+            //$("#txtSearch").on("keyup", fnKeyPress);
+            var apiUrl='@Url.HttpRouteUrl("ServiceAreaApi", new { controller= "PersonService", action= "KPeopleSearch" })';
+            $("#txtSearch").kendoAutoComplete({
+                dataSource: {
+                    transport: {
+                        read: {
+                            url: apiUrl,
+                            dataType: "json",
+                            type: "post"
+                        }
+                    }
+                },
+                //filter: "startswith",
+                placeholder: "Select Person...",
+                separator: ", "
+            });
+
+            $('.dropright button').on("click", function (e) {
+                e.stopPropagation();
+                e.preventDefault();
+
+                if (!$(this).next('div').hasClass('show')) {
+                    $(this).next('div').addClass('show');
+                } else {
+                    $(this).next('div').removeClass('show');
+                }
+
+            });
+        });
+
+        function fnKeyPress() {
+            var apiUrl = '@Url.HttpRouteUrl("ServiceAreaApi", new { controller= "PersonService", action= "PeopleSearch" })';
+            $.ajax({
+                url: apiUrl + '?keyword=' + encodeURI($("#txtSearch").val()),
+                type: 'GET',
+                contentType: 'application/json; charset=utf-8',
+                success: function (data) {
+                    var aTags = new Array(data.length);
+                    for (var i = 0; i < data.length; i++) {
+                        aTags[i] = data[i];
+                    }
+                    $("#txtSearch").autocomplete({
+                        source: aTags,
+                        position: { my : "left top+10", at: "left bottom" }
+                    });
+                }
+            });
+        }
+    </script>
+</body>
+</html>

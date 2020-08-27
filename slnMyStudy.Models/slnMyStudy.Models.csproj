@@ -1,0 +1,477 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{D968A216-44D7-4F0A-BE5A-D5A1B27B8863}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>slnMyStudy.Models</RootNamespace>
+    <AssemblyName>slnMyStudy.Models</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.3\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.EntityFramework, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.EntityFramework.2.2.3\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="PagedList, Version=1.17.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\PagedList.1.17.0.0\lib\net40\PagedList.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Address_1.cs">
+      <DependentUpon>testModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Address_2.cs">
+      <DependentUpon>testModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Address_3.cs">
+      <DependentUpon>testModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ApiRecordModel.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ApiRecordModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ApiRecordModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ApiRecordModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="APIResult.cs" />
+    <Compile Include="BaseModel\ApplicationDbContext.cs" />
+    <Compile Include="BaseModel\CustomUser.cs" />
+    <Compile Include="Calendar_Schedule.cs">
+      <DependentUpon>testModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Categories.cs">
+      <DependentUpon>NorthWindModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CustomerDemographics.cs">
+      <DependentUpon>NorthWindModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Customers.cs">
+      <DependentUpon>NorthWindModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="db_user.cs">
+      <DependentUpon>testModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Drink_Order_D.cs">
+      <DependentUpon>testModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Drink_Order_M.cs">
+      <DependentUpon>testModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Drink_Product.cs">
+      <DependentUpon>testModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Employees.cs">
+      <DependentUpon>NorthWindModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ExecuteResult.cs" />
+    <Compile Include="FavTravelFood.cs">
+      <DependentUpon>ApiRecordModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="FileUpload_DB.cs">
+      <DependentUpon>testModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Food_Calorie.cs">
+      <DependentUpon>testModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Food_Menu.cs">
+      <DependentUpon>testModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Member.cs">
+      <DependentUpon>tMemberModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="News_Test.cs">
+      <DependentUpon>testModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="News_Test_Class.cs">
+      <DependentUpon>testModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="News_Test_Talk.cs">
+      <DependentUpon>testModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="News_User.cs">
+      <DependentUpon>testModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="NorthWindModel.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>NorthWindModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="NorthWindModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>NorthWindModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Orders.cs">
+      <DependentUpon>NorthWindModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Order_Details.cs">
+      <DependentUpon>NorthWindModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ParamModel\ParamModel.cs" />
+    <Compile Include="Partials\Address_1Metadata.cs">
+      <DependentUpon>testModelMetadata.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Partials\Address_2Metadata.cs">
+      <DependentUpon>testModelMetadata.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Partials\Address_3Metadata.cs">
+      <DependentUpon>testModelMetadata.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Partials\ApiRecordModelMetadata.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ApiRecordModelMetadata.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Partials\Calendar_ScheduleMetadata.cs">
+      <DependentUpon>testModelMetadata.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Partials\CategoriesMetadata.cs">
+      <DependentUpon>NorthWindModelMetadata.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Partials\CustomerDemographicsMetadata.cs">
+      <DependentUpon>NorthWindModelMetadata.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Partials\CustomersMetadata.cs">
+      <DependentUpon>NorthWindModelMetadata.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Partials\db_userMetadata.cs">
+      <DependentUpon>testModelMetadata.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Partials\Drink_Order_DMetadata.cs">
+      <DependentUpon>testModelMetadata.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Partials\Drink_Order_MMetadata.cs">
+      <DependentUpon>testModelMetadata.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Partials\Drink_ProductMetadata.cs">
+      <DependentUpon>testModelMetadata.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Partials\EmployeesMetadata.cs">
+      <DependentUpon>NorthWindModelMetadata.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Partials\FavTravelFoodMetadata.cs">
+      <DependentUpon>ApiRecordModelMetadata.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Partials\FileUpload_DBMetadata.cs">
+      <DependentUpon>testModelMetadata.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Partials\Food_CalorieMetadata.cs">
+      <DependentUpon>testModelMetadata.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Partials\Food_MenuMetadata.cs">
+      <DependentUpon>testModelMetadata.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Partials\MemberMetadata.cs">
+      <DependentUpon>tMemberMetadata.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Partials\News_TestMetadata.cs">
+      <DependentUpon>testModelMetadata.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Partials\News_Test_ClassMetadata.cs">
+      <DependentUpon>testModelMetadata.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Partials\News_Test_TalkMetadata.cs">
+      <DependentUpon>testModelMetadata.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Partials\News_UserMetadata.cs">
+      <DependentUpon>testModelMetadata.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Partials\NorthWindModelMetadata.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>NorthWindModelMetadata.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Partials\OrdersMetadata.cs">
+      <DependentUpon>NorthWindModelMetadata.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Partials\Order_DetailsMetadata.cs">
+      <DependentUpon>NorthWindModelMetadata.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Partials\ProductsMetadata.cs">
+      <DependentUpon>NorthWindModelMetadata.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Partials\Question_D1Metadata.cs">
+      <DependentUpon>testModelMetadata.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Partials\Question_D2Metadata.cs">
+      <DependentUpon>testModelMetadata.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Partials\Question_MMetadata.cs">
+      <DependentUpon>testModelMetadata.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Partials\RegionMetadata.cs">
+      <DependentUpon>NorthWindModelMetadata.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Partials\ShippersMetadata.cs">
+      <DependentUpon>NorthWindModelMetadata.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Partials\student_classMetadata.cs">
+      <DependentUpon>testModelMetadata.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Partials\student_departmentMetadata.cs">
+      <DependentUpon>testModelMetadata.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Partials\student_testMetadata.cs">
+      <DependentUpon>testModelMetadata.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Partials\SuppliersMetadata.cs">
+      <DependentUpon>NorthWindModelMetadata.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Partials\sysdiagramsMetadata.cs">
+      <DependentUpon>NorthWindModelMetadata.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Partials\TerritoriesMetadata.cs">
+      <DependentUpon>NorthWindModelMetadata.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Partials\test1Metadata.cs">
+      <DependentUpon>testModelMetadata.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Partials\testMetadata.cs">
+      <DependentUpon>testModelMetadata.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Partials\testModelMetadata.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>testModelMetadata.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Partials\test_adMetadata.cs">
+      <DependentUpon>testModelMetadata.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Partials\test_classMetadata.cs">
+      <DependentUpon>testModelMetadata.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Partials\test_onlyMetadata.cs">
+      <DependentUpon>testModelMetadata.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Partials\test_talkMetadata.cs">
+      <DependentUpon>testModelMetadata.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Partials\test_timestampMetadata.cs">
+      <DependentUpon>testModelMetadata.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Partials\tMemberMetadata1.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>tMemberMetadata.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Partials\Vote_1Metadata.cs">
+      <DependentUpon>testModelMetadata.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Partials\Vote_2Metadata.cs">
+      <DependentUpon>testModelMetadata.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Partials\Vote_AutoMetadata.cs">
+      <DependentUpon>testModelMetadata.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Products.cs">
+      <DependentUpon>NorthWindModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Question_D1.cs">
+      <DependentUpon>testModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Question_D2.cs">
+      <DependentUpon>testModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Question_M.cs">
+      <DependentUpon>testModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Region.cs">
+      <DependentUpon>NorthWindModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SaveModel\testSaveModel.cs" />
+    <Compile Include="SearchModel\SearchModel.cs" />
+    <Compile Include="Shippers.cs">
+      <DependentUpon>NorthWindModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="student_class.cs">
+      <DependentUpon>testModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="student_department.cs">
+      <DependentUpon>testModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="student_test.cs">
+      <DependentUpon>testModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Suppliers.cs">
+      <DependentUpon>NorthWindModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="sysdiagrams.cs">
+      <DependentUpon>NorthWindModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Territories.cs">
+      <DependentUpon>NorthWindModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="test.cs">
+      <DependentUpon>testModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="test1.cs">
+      <DependentUpon>testModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="testModel.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>testModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="testModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>testModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="test_ad.cs">
+      <DependentUpon>testModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="test_class.cs">
+      <DependentUpon>testModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="test_only.cs">
+      <DependentUpon>testModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="test_talk.cs">
+      <DependentUpon>testModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="test_timestamp.cs">
+      <DependentUpon>testModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BookInfo.cs" />
+    <Compile Include="tMemberModel.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>tMemberModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tMemberModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>tMemberModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModel\EditViewModel.cs" />
+    <Compile Include="ViewModel\LoginViewModel.cs" />
+    <Compile Include="ViewModel\ProductsCategoriesViewModel.cs" />
+    <Compile Include="ViewModel\RegisterViewModel.cs" />
+    <Compile Include="ViewModel\testViewModel.cs" />
+    <Compile Include="ViewModel\TravelFood.cs" />
+    <Compile Include="Vote_1.cs">
+      <DependentUpon>testModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Vote_2.cs">
+      <DependentUpon>testModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Vote_Auto.cs">
+      <DependentUpon>testModel.tt</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="ApiRecordModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ApiRecordModel.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="ApiRecordModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ApiRecordModel.cs</LastGenOutput>
+    </Content>
+    <Content Include="NorthWindModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>NorthWindModel.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="NorthWindModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>NorthWindModel.cs</LastGenOutput>
+    </Content>
+    <Content Include="Partials\ApiRecordModelMetadata.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ApiRecordModelMetadata.cs</LastGenOutput>
+    </Content>
+    <Content Include="Partials\NorthWindModelMetadata.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>NorthWindModelMetadata.cs</LastGenOutput>
+    </Content>
+    <Content Include="Partials\testModelMetadata.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>testModelMetadata.cs</LastGenOutput>
+    </Content>
+    <Content Include="Partials\tMemberMetadata.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>tMemberMetadata1.cs</LastGenOutput>
+    </Content>
+    <Content Include="testModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>testModel.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="testModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>testModel.cs</LastGenOutput>
+    </Content>
+    <Content Include="tMemberModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>tMemberModel.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="tMemberModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>tMemberModel.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\slnMyStudy.Common\slnMyStudy.Common.csproj">
+      <Project>{4622ac18-dead-4fbb-9dfe-516403742029}</Project>
+      <Name>slnMyStudy.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\slnMyStudy.Resource\slnMyStudy.Resource.csproj">
+      <Project>{73d4f4e6-2e39-4005-b692-887ecf8c2759}</Project>
+      <Name>slnMyStudy.Resource</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

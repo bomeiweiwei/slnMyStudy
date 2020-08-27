@@ -1,0 +1,48 @@
+﻿
+@{
+    ViewBag.Title = "TestRenderAction";
+    Layout = "~/Views/Shared/_LayoutPopup.cshtml";
+}
+<h2>TestRenderAction</h2>
+@{Html.RenderAction("TestRenderAction2", "Home", new { content = "5566" }); }
+
+@ViewBag.content
+
+<input type="button" value="Open" onclick="BootstrapDialogOpen()" />
+
+<script>
+    var dialog = new Object;
+    function BootstrapDialogOpen() {
+         dialog = new BootstrapDialog({
+            id: 'dialog_popup',
+            closable: true,
+            cssClass: 'modal-width-100per',
+            message: function (dialogResponse) {
+                var pageContent = String.format("<iframe width=\"100%\" height=\"{2}\" frameborder=\"0\"  allowtransparency=\"true\" src=\"{0}{1}\"></iframe>", dialogResponse.getData('pageToLoad'), dialogResponse.getData('pageParam'), $(window).innerHeight());
+                var $content = $(pageContent);
+                return $content;
+            },
+            data: {
+                'pageToLoad': '',
+                'pageParam': ''
+            },
+            animate: false,
+            onshow: function (dialogRef) {
+            },
+            onshown: function (dialogRef) {
+            },
+            onhide: function (dialogRef) {
+            },
+            onhidden: function (dialogRef) {
+            }
+        });
+
+        dialog.close();
+        dialog.setData('pageToLoad', '@Url.Action("TestRenderAction2")');
+
+        dialog.setData('pageParam', '?content=' + 5566);
+
+        dialog.realize();
+        dialog.open();
+    }
+</script>

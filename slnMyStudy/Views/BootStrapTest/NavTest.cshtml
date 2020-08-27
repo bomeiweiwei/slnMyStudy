@@ -1,0 +1,90 @@
+﻿@{ 
+    Layout = "~/Views/Shared/_LayoutPopup.cshtml";
+}
+
+<style>
+    img {
+        width: 100px
+    }
+</style>
+
+<div class="container">
+    <ul class="nav">
+        <li class="nav-item">
+            <a class="nav-link active" href="#">Active</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#">Link</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#">Link</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link disabled" href="#">Disabled</a>
+        </li>
+    </ul>
+
+
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+            <a class="nav-link active" data-toggle="tab" href="#tab1">跟著實務學習ASP.NET MVC</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#tab2">跟著實務學習網頁設計</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#tab3">C & C++程式設計經典</a>
+        </li>
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">Dropdown</a>
+            <div class="dropdown-menu">
+                <a class="dropdown-item" href="#">Action</a>
+                <a class="dropdown-item" href="#">Another action</a>
+                <a class="dropdown-item" href="#">Something else here</a>
+            </div>
+        </li>
+    </ul>
+
+    <!-- Tab panes -->
+    <div class="tab-content">
+        <div class="tab-pane active" id="tab1">
+            <div class="media border m-1 p-3">
+                <img src="~/images/book01.png" alt="media objects" />
+                <div class="media-body ml-2 align-self-center">
+                    <h4>跟著實務學習ASP.NET MVC</h4>
+                    <p>易教：撰寫書籍同時進行試教，去蕪存菁符合教學需求，讓教師好備課。</p>
+                    <p>易學：經由初學者試讀，按圖索驥，完整重現書中範例，快速掌握學習重點。</p>
+                    <p>易懂：說明循序漸進，圖文並茂逐步解說，易學易懂，大大提升成就感。</p>
+
+                    <div class="media border m-1 p-3">
+                        <img src="~/images/book04.png" alt="media objects" />
+                        <div class="media-body ml-2">
+                            <p>買書送Visual C#</p>
+                            <p>C# language support is an optional install from the Marketplace.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="tab2">
+            <div class="media border border-top-0 p-3">
+                <img src="~/images/book02.png" class="border border-primary" />
+                <div class="media-body ml-3">
+                    <p>介紹HTML、CSS、JavaScript、jQuery網頁程式設計。</p>
+                    <p>介紹Bootstrap、jQueryMobile、Cordova跨平台程式設計。</p>
+                    <p>介紹微軟MTA HTML & CSS國際認證解題。</p>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="tab3">
+            <div class="media border border-top-0 p-3">
+                <img src="~/images/book03.png" class="border border-primary" />
+                <div class="media-body ml-3">
+                    <p>介紹C語言程式設計技巧與C++物件導向程式設計。</p>
+                    <p>介紹C++函式指標、樣板、例外處理、STL等進階議題。</p>
+                    <p>列舉易懂且具代表性與實用性的程式範例。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

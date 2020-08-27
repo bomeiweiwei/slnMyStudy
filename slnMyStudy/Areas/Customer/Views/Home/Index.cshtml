@@ -1,0 +1,79 @@
+﻿@model IEnumerable<slnMyStudy.Models.CustomUser>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout_Admin.cshtml";
+}
+
+<h2>會員列表</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Email)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PhoneNumber)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PhoneNumber)
+            </td>
+            <td style="white-space: nowrap">
+                <a class="btn btn-primary" href="javascript:void(0)" onclick="Edit('@item.Id')">編輯</a>
+                <a class="btn btn-info" href="javascript:void(0)" onclick="Details('@item.Id')">詳細</a>
+                <a class="btn btn-danger" href="javascript:void(0)" onclick="Delete('@item.Id',this)">刪除</a>
+            </td>
+        </tr>
+    }
+</table>
+
+@section scripts{
+    <script>
+        function Edit(id) {
+            RedirectPage('@Url.Action("Edit", "Account", new { area = "Admin"})', { id: id });
+        }
+
+        function Details(id) {
+            RedirectPage('@Url.Action("Details", "Account", new { area = "Admin"})', { id: id });
+        }
+
+        function Delete(id, obj) {
+            window.Delconfirm("確定刪除該筆資料?").then(function () {
+                var url = '@Url.Action("Delete", "Account", new { area = "Admin"})';
+                $.ajax({
+                    url: url,
+                    data: { id: id },
+                    type: 'POST',
+                    async: false,
+                    success: function (result) {
+                        window.Msgalert(result);
+                        $(obj).closest("tr").remove();
+                    }
+                });
+            }, function () {
+            });
+        }
+        function Msgalert(content) {
+            $("<div></div>").kendoAlert({
+                title: "結果",
+                content: content
+            }).data("kendoAlert").open();
+        }
+        function Delconfirm(content) {
+            return $("<div></div>").kendoConfirm({
+                title: "刪除確認",
+                content: content
+            }).data("kendoConfirm").open().result;
+        }
+    </script>
+
+}

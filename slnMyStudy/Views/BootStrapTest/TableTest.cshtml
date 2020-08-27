@@ -1,0 +1,64 @@
+﻿@using PagedList.Mvc
+@using PagedList
+@model IPagedList<slnMyStudy.Models.Products>
+
+@{
+    ViewBag.Title = "TableTest";
+    Layout = "~/Views/Shared/_LayoutPopup.cshtml";
+}
+<link href="~/Content/PagedList.css" rel="stylesheet" />
+<div class="container">
+    <div class="row">
+        <h2>表格</h2>
+        <table class="table table-hover">
+            <thead class="table-primary">
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.FirstOrDefault().ProductName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.FirstOrDefault().QuantityPerUnit)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.FirstOrDefault().UnitPrice)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.FirstOrDefault().Categories.CategoryName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.FirstOrDefault().Suppliers.CompanyName)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td class="table-active">
+                            @Html.DisplayFor(modelItem => item.ProductName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.QuantityPerUnit)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.UnitPrice)
+                        </td>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Categories.CategoryName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Suppliers.CompanyName)
+                        </td>
+                        <td>
+                            <img src="~/images/book01.png" class="w-25" />
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        @Html.PagedListPager(Model, page => Url.Action("TableTest", new { page }))
+    </div>
+</div>

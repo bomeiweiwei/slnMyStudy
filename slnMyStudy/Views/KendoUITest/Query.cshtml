@@ -1,0 +1,138 @@
+﻿@model IEnumerable<slnMyStudy.Models.test>
+
+@{
+    ViewBag.Title = "Query";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <div class="row">
+        <form class="form-horizontal">
+            <div class="form-group" style="padding-left: 10px;">
+                <label for="searchClassName">類別</label>
+                <div style="padding-left: 10px;">
+                    @Html.DropDownList("searchClassName", (IEnumerable<SelectListItem>)ViewBag.ClassDDL, htmlAttributes: new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group" style="padding-left: 10px;">
+                <label for="searchStart_time">時間區間</label>
+                <div style="padding-left: 10px;">
+                    <input id="searchStart_time" name="searchStart_time" value="@DateTime.Now.AddDays(-7).ToString("yyyy-MM-dd")"/>
+                    @*@Html.Editor("searchStart_time", "DateTimeTemp", new { htmlAttributes = new { @class = "form-control" } })*@
+                    ~
+                    @Html.Editor("searchEnd_time", "DateTimeTemp", new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+            </div>
+            <div class="form-group" style="padding-left: 10px;">
+                <label for="searchTitle">標題</label>
+                <div style="padding-left: 10px;">
+                    @Html.Editor("searchTitle", new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+            </div>
+            <div class="form-group" style="padding-left: 10px;">
+                <button type="button" id="btn_Search">查詢</button>
+            </div>
+        </form>
+    </div>
+    <hr/>
+    <div class="row">
+        <div id="grid3"></div>
+    </div>
+</div>
+@section scripts{
+    <script type="text/javascript">
+        var apiUrl = '@Url.HttpRouteUrl("ServiceAreaApi", new { controller= "TestService", action= "TestDataSearch" })';
+        var dataSource = new kendo.data.DataSource({
+            transport: {
+                read: function (options) {
+                    $.ajax({
+                        url: apiUrl,
+                        type: 'POST',
+                        data: dsAdditionalParam(),
+                        dataType: "json",
+                        success: function (result) {
+                            options.success(result);
+                        },
+                        error: function (result) {
+                            options.error(result);
+                        }
+                    });
+                },
+            },
+            pageSize: 10,
+        });
+
+        function dsAdditionalParam() {           
+            var items = multiSelect.value();
+            console.log(items);
+            return {
+                searchClassName: items,//$("#searchClassName").val(),
+                searchStart_time: $("#searchStart_time").val(),
+                searchEnd_time: $("#searchEnd_time").val(),
+                searchTitle: $("#searchTitle").val(),
+            }
+        }
+
+        function initGrid3() {
+            var grid = $('#grid3').kendoGrid({
+                dataSource: dataSource,
+                serverPaging: true,
+                filterable: true,
+                //resizable: true,
+                columns: [
+                    {
+                        field: 'id',
+                        template: function (e) {
+                            return '<a href = "\#" onclick ="GetDetail(' + e.id + ')">詳細</a><input type="hidden" name="id" value="' + e.id + '">';
+                        },
+                        title: '功能', encoded: false, attributes: { style: "text-align:center;" }
+                    },
+                    { field: 'class', title: '類別', encoded: false, attributes: { style: "text-align:center;" } },
+                    { field: 'title', title: '標題', encoded: false, attributes: { style: "text-align:center;" } },
+                    { field: 'author', title: '作者', encoded: false, attributes: { style: "text-align:center;" } },
+                    { field: 'hit_no', title: '點擊數', encoded: false, attributes: { style: "text-align:center;" } },
+                ],
+                noRecords: {
+                    template: "<em>查無符合資料!</em>"
+                },
+                pageable: {
+                    pageSizes: true
+                },
+                sortable: {
+                    mode: "single",
+                    allowUnsort: false
+                },             
+            }).data('kendoGrid');
+            initTooltip(grid);
+        }
+
+        function initTooltip(grid) {
+             grid.thead.kendoTooltip({
+                filter: "th",
+                content: function (e) {
+                    var target = e.target; // element for which the tooltip is shown
+                    return $(target).text();
+                }
+            });
+        }
+        var multiSelect = $("#searchClassName").kendoMultiSelect().data("kendoMultiSelect");
+        $(document).ready(function () {
+            $("#btn_Search").kendoButton({
+                click: function (e) {
+                    dataSource.read();
+                }
+            });
+            //$("#searchClassName").kendoMultiSelect().data("kendoMultiSelect");
+            $("#searchStart_time").kendoDatePicker({
+                format: "yyyy-MM-dd",
+                parseFormats: ["yyyy-MM-dd"] //format also will be added to parseFormats
+            });
+            $("#searchEnd_time").kendoDatePicker({
+                format: "yyyy-MM-dd",
+                parseFormats: ["yyyy-MM-dd"] //format also will be added to parseFormats
+            });
+
+            initGrid3();
+        });
+    </script>
+}

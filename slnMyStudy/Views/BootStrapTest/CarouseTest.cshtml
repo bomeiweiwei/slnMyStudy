@@ -1,0 +1,35 @@
+﻿
+@{
+    ViewBag.Title = "CarouseTest";
+    Layout = "~/Views/Shared/_LayoutPopup.cshtml";
+}
+
+<div id="carouselink" class="carousel slide" data-ride="carousel">
+    <!-- 連結導引 -->
+    <ol class="carousel-indicators">
+        <li data-toggle="#carouselink" data-slide-to="0" class="active"></li>
+        <li data-toggle="#carouselink" data-slide-to="1"></li>
+        <li data-toggle="#carouselink" data-slide-to="2"></li>
+    </ol>
+
+    <!-- 幻燈片圖 -->
+    <div class="carousel-inner">
+        <div class="carousel-item active">
+            <img class="w-100" src="~/images/slide1.jpg" />
+        </div>
+        <div class="carousel-item">
+            <img class="w-100" src="~/images/slide2.jpg" />
+        </div>
+        <div class="carousel-item">
+            <img class="w-100" src="~/images/slide3.jpg" />
+        </div>
+    </div>
+
+    <a class="carousel-control-prev" href="#carouselink" role="button" data-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    </a>
+    <a class="carousel-control-next" href="#carouselink" role="button" data-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    </a>
+</div>
+

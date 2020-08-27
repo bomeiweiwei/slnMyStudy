@@ -1,0 +1,146 @@
+﻿
+@{
+    ViewBag.Title = "CreateBook";
+    Layout = "~/Views/Shared/_LayoutPopup.cshtml";
+}
+
+<form method="post" action="" enctype="multipart/form-data">
+    @Html.AntiForgeryToken()
+    <div class="container">
+        <div class="img-thumbnail clearfix col-md-4 col-12" style="padding:20px">
+            <h4 class="bg-primary rounded text-center text-white" style="padding:10px">書籍上架</h4>
+            <div class="form-group form-row">
+                <label for="txtBookName">書名</label>&nbsp;
+                <input type="text" id="txtBookName" name="txtBookName" required class="form-control" />
+            </div>
+            <div class="form-group">
+                <label for="txtBookPrice">單價</label>
+                <input type="number" id="txtBookPrice" name="txtBookPrice" required class="form-control" />
+            </div>
+            <div class="form-group">
+                <label for="txtBookCount">
+                    數量
+                </label>
+                <input type="range" id="txtBookCount" name="txtBookCount" class="custom-range" min="1" max="100" value="1" onchange="updateCount(this.value);" />
+                <div id="CountNum" class="float-right">1</div>
+            </div>
+            <div class="form-group">
+                <label for="selectBookCat">書籍類別</label>
+                <select id="selectBookCat" name="selectBookCat" class="form-control">
+                    <option value="">請選擇</option>
+                    <option value="1">科技類</option>
+                    <option value="2">旅遊類</option>
+                    <option value="3">大自然</option>
+                    <option value="4">影視類</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <input type="text" name="uid" id="uid" data-val="true" data-val-required="欄位不能为空！" />
+                <span data-valmsg-for="uid" data-valmsg-replace="true"></span>
+            </div>
+            <div class="form-group">
+                <div class="custom-file">
+                    <input type="file" id="fileBookPic" name="fileBookPic" class="custom-file-label" />
+                    <label for="fileBookPic" class="custom-file-label">圖片上傳</label>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="chkPublish" name="chkPublish" />
+                    <label for="chkPublish" class="custom-control-label">發佈</label>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" id="chkSprice" name="chkSprice" />
+                    <label for="chkSprice" class="custom-control-label">提供會員價</label>
+                </div>
+            </div>
+            <p>
+                <input type="submit" value="上架" class="btn btn-success" />
+            </p>
+        </div>
+    </div>
+</form>
+<hr />
+@using (Ajax.BeginForm("DoCreateBook", "Home", null,
+                    new AjaxOptions
+                    {
+                        OnSuccess = "OnSuccess",
+                        OnFailure = "OnFailure"
+                    }, new { id = "__AjaxAntiForgeryForm" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="container">
+        <div class="img-thumbnail clearfix col-md-4 col-12" style="padding:20px">
+            <h4 class="bg-primary rounded text-center text-white" style="padding:10px">書籍上架</h4>
+            <div class="form-group form-row">
+                <label for="txtBookName2">書名</label>&nbsp;
+                <input type="text" id="txtBookName2" name="txtBookName" required class="form-control" />
+            </div>
+            <div class="form-group">
+                <label for="txtBookPrice2">單價</label>
+                <input type="number" id="txtBookPrice2" name="txtBookPrice" required class="form-control" />
+            </div>
+            <div class="form-group">
+                <label for="txtBookCount2">
+                    數量
+                </label>
+                <input type="range" id="txtBookCount2" name="txtBookCount" class="custom-range" min="1" max="100" value="1" onchange="updateCount2(this.value);" />
+                <div id="CountNum2" class="float-right">1</div>
+            </div>
+            <div class="form-group">
+                <label for="selectBookCat2">書籍類別</label>
+                <select id="selectBookCat2" name="selectBookCat" class="form-control">
+                    <option value="">請選擇</option>
+                    <option value="1">科技類</option>
+                    <option value="2">旅遊類</option>
+                    <option value="3">大自然</option>
+                    <option value="4">影視類</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <input type="text" name="uid" id="uid" data-val="true" data-val-required="欄位不能為空!" />
+                <span data-valmsg-for="uid" data-valmsg-replace="true"></span>
+            </div>
+            <div class="form-group">
+                <div class="custom-file">
+                    <input type="file" id="fileBookPic2" name="fileBookPic" class="custom-file-label" />
+                    <label for="fileBookPic2" class="custom-file-label">圖片上傳</label>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="chkPublish2" name="chkPublish" />
+                    <label for="chkPublish2" class="custom-control-label">發佈</label>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" id="chkSprice2" name="chkSprice" />
+                    <label for="chkSprice2" class="custom-control-label">提供會員價</label>
+                </div>
+            </div>
+            <p>
+                <input type="submit" value="上架" class="btn btn-success" />
+            </p>
+        </div>
+    </div>
+}
+@section scripts{
+    <script>
+        function updateCount(val) {
+            $("#CountNum").html(val);
+        }
+        function updateCount2(val) {
+            $("#CountNum2").html(val);
+        }
+        function OnSuccess(res) {
+            alert(res);
+        }
+        //OnFailure
+        function OnFailure(response) {
+            alert("Error occured.");
+        }
+    </script>
+}

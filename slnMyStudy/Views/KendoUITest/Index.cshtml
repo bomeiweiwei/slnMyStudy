@@ -1,0 +1,188 @@
+﻿@model slnMyStudy.Models.ViewModel.TestViewModel
+
+@{
+    ViewBag.Title = "Grid測試";
+}
+
+<style>
+    div.k-loading-mask {
+        z-index: 3; /* must be larger than the z-index:2 of #container */
+    }
+</style>
+
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <h5 class="bg-success text-center p-3">Controller傳進資料</h5>
+            <div id="grid1"></div>
+        </div>
+        <div class="col-12">
+            <h5 class="bg-warning text-center p-3">Ajax傳進資料</h5>
+            <div id="grid2"></div>
+        </div>
+        <div class="col-12">
+            <h5 class="bg-danger text-center p-3">Read</h5>
+            <div id="grid3"></div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+        function initGrid1() {
+            //Person_grid
+            var grid = $('#grid1').kendoGrid({
+                columns: [
+                    {
+                        field: 'id',
+                        template: function (e) {
+                            return '<a href = "\#" onclick ="GetDetail(' + e.id + ')">詳細</a><input type="hidden" name="id" value="' + e.id + '">';
+                        },
+                        title: '功能', encoded: false, attributes: { style: "text-align:center;" }
+                    },
+                    { field: 'class', title: '類別', encoded: false, attributes: { style: "text-align:center;" } },
+                    { field: 'title', title: '標題', encoded: false, attributes: { style: "text-align:center;" } },
+                    { field: 'author', title: '作者', encoded: false, attributes: { style: "text-align:center;" } },
+                    { field: 'hit_no', title: '點擊數', encoded: false, attributes: { style: "text-align:center;" } },
+                ],
+                noRecords: {
+                    template: "<em>查無符合資料!</em>"
+                },
+                pageable: {
+                    pageSizes: true
+                },
+                sortable: {
+                    mode: "single",
+                    allowUnsort: false
+                },
+            }).data('kendoGrid');
+            var jsonData = '@Html.Raw(Model.JsonData)';
+            var obj = JSON.parse(jsonData);
+            var dataSource = new kendo.data.DataSource({ data: obj, pageSize: 10 });
+            grid.setDataSource(dataSource);
+            initTooltip(grid);
+        }
+
+        function initGrid2() {
+            var grid = $('#grid2').kendoGrid({
+                columns: [
+                    {
+                        field: 'id',
+                        template: function (e) {
+                            return '<a href = "\#" onclick ="GetDetail(' + e.id + ')">詳細</a><input type="hidden" name="id" value="' + e.id + '">';
+                        },
+                        title: '功能', encoded: false, attributes: { style: "text-align:center;" }
+                    },
+                    { field: 'class', title: '類別', encoded: false, attributes: { style: "text-align:center;" } },
+                    { field: 'title', title: '標題', encoded: false, attributes: { style: "text-align:center;" } },
+                    { field: 'author', title: '作者', encoded: false, attributes: { style: "text-align:center;" } },
+                    { field: 'hit_no', title: '點擊數', encoded: false, attributes: { style: "text-align:center;" } },
+                ],
+                noRecords: {
+                    template: "<em>查無符合資料!</em>"
+                },
+                pageable: {
+                    pageSizes: true
+                },
+                sortable: {
+                    mode: "single",
+                    allowUnsort: false
+                },                
+            }).data('kendoGrid');
+
+            $.ajax({
+                url: '@Url.HttpRouteUrl("ServiceAreaApi", new { controller= "TestService", action= "Get_testData" })',
+                type: 'POST',
+                async: false,
+                success: function (res) {
+                    setGrid("grid2", res);
+                }
+            });
+            initTooltip(grid);
+        }
+
+        var apiUrl = '@Url.HttpRouteUrl("ServiceAreaApi", new { controller= "TestService", action= "TestDataSearch" })';
+        var dataSource = new kendo.data.DataSource({
+            transport: {
+                read: function (options) {
+                    $.ajax({
+                        url: apiUrl,
+                        type: 'POST',
+                        data: dsAdditionalParam(),
+                        dataType: "json",
+                        success: function (result) {
+                            options.success(result);
+                        },
+                        error: function (result) {
+                            options.error(result);
+                        }
+                    });
+                },
+            },
+            pageSize: 10,
+        });
+
+        function dsAdditionalParam() {
+            return {
+                searchClassName: '',
+                searchTest_time: '',
+                searchTitle: '',
+            }
+        }
+
+        function initGrid3() {
+            var grid = $('#grid3').kendoGrid({
+                dataSource: dataSource,
+                serverPaging: true,
+                filterable: true,
+                //resizable: true,
+                columns: [
+                    {
+                        field: 'id',
+                        template: function (e) {
+                            return '<a href = "\#" onclick ="GetDetail(' + e.id + ')">詳細</a><input type="hidden" name="id" value="' + e.id + '">';
+                        },
+                        title: '功能', encoded: false, attributes: { style: "text-align:center;" }
+                    },
+                    { field: 'class', title: '類別', encoded: false, attributes: { style: "text-align:center;" } },
+                    { field: 'title', title: '標題', encoded: false, attributes: { style: "text-align:center;" } },
+                    { field: 'author', title: '作者', encoded: false, attributes: { style: "text-align:center;" } },
+                    { field: 'hit_no', title: '點擊數', encoded: false, attributes: { style: "text-align:center;" } },
+                ],
+                noRecords: {
+                    template: "<em>查無符合資料!</em>"
+                },
+                pageable: {
+                    pageSizes: true
+                },
+                sortable: {
+                    mode: "single",
+                    allowUnsort: false
+                },             
+            }).data('kendoGrid');
+            initTooltip(grid);
+        }
+
+        function setGrid(gridName, res) {
+            var grid = $("#" + gridName + "").data("kendoGrid");
+            var dataSource = new kendo.data.DataSource({ data: res, pageSize: 10 });
+            grid.setDataSource(dataSource);
+        }
+
+        function initTooltip(grid) {
+             grid.thead.kendoTooltip({
+                filter: "th",
+                content: function (e) {
+                    var target = e.target; // element for which the tooltip is shown
+                    return $(target).text();
+                }
+            });
+        }
+        
+        $(function () {
+            initGrid1();
+            initGrid2();
+            initGrid3();
+        });
+    </script>
+}

@@ -1,0 +1,126 @@
+﻿
+@{
+    ViewBag.Title = "BootstrapDialogTest";
+    Layout = "~/Views/Shared/_LayoutPopup.cshtml";
+}
+
+<h2>BootstrapDialogTest</h2>
+
+<style>
+    .login-dialog .modal-dialog {
+        width: 600px;
+    }
+
+    .mydialog .modal-dialog {
+        max-width: 95%;
+        width: 90%;
+    }
+</style>
+
+<button class="btn btn-info" onclick="openBaseDialog()">BaseDialog</button>
+<button class="btn btn-success" onclick="openDialog1()">Open Dialog With Param</button>
+<button class="btn btn-warning" onclick="openDialog2()">Open Dialog LoadPage</button>
+
+<script>
+    function openBaseDialog() {
+       BootstrapDialog.show({
+            title: 'Sign In',
+            message: 'Your sign-in form goes here.',
+            cssClass: 'login-dialog',
+            buttons: [{
+                label: 'Sign In Now!',
+                cssClass: 'btn-primary',
+                action: function(dialog){
+                    dialog.close();
+                }
+            }]
+        });
+    }
+
+    var dialog = new Object;
+    function openDialog1() {
+        dialog = new BootstrapDialog({
+            title: '產品資訊',
+            type: BootstrapDialog.TYPE_SUCCESS,
+            id: 'test_popup1',
+            closable: true,
+            closeByBackdrop: false,
+            closeByKeyboard: false,
+            cssClass: 'mydialog',
+            message: function (dialogMessage) {
+                var pageContent = String.format("<iframe width=\"100%\" height=\"{2}\" frameborder=\"0\"  allowtransparency=\"true\" src=\"{0}{1}\"></iframe>", dialogMessage.getData('pageToLoad'), dialogMessage.getData('pageParam'), $(window).innerHeight());
+                var $content = $(pageContent);
+                return $content;
+            },
+            draggable: true,
+            data: {
+                'pageToLoad': '',
+                'pageParam': ''
+            },
+            animate: false,
+            onshow: function (dialogRef) {
+            },
+            onhide: function (dialogRef) {
+            },
+            onhidden: function (dialogRef) {
+            }
+        });
+
+        dialog.setData('pageToLoad', '@Url.Action("DialogShow" ,"BootStrapTest"  ,new { area = "" })');
+        dialog.setData('pageParam', '?id=' + 5);
+
+        dialog.realize();
+        //dialog.setSize(BootstrapDialog.SIZE_WIDE);
+        dialog.open();
+    }
+
+    function openDialog2() {
+        dialog = new BootstrapDialog({
+            title: '產品資訊',
+            type: BootstrapDialog.TYPE_WARNING,
+            id: 'test_popup2',
+            closable: true,
+            closeByBackdrop: false,
+            closeByKeyboard: false,
+            //cssClass: 'mydialog',
+            message: function (dialogMessage) {
+                var pageContent = String.format("<iframe id='testIframe' width=\"100%\" height=\"{0}\" frameborder=\"0\"  allowtransparency=\"true\" src='about:blank'></iframe>", $(window).innerHeight());
+                var $content = $(pageContent);
+                return $content;
+            },
+            data: {
+                'pageToLoad': '',
+                'pageParam': ''
+            },
+            animate: false,
+            onshow: function (dialogRef) {
+            },
+            onshown: function (dialogRef) {
+                var doc = document.getElementById('testIframe').contentWindow.document;
+                doc.open();
+                doc.write(loadPage());
+                doc.close();
+            },
+            onhide: function (dialogRef) {
+            },
+            onhidden: function (dialogRef) {
+            }
+        });
+
+        dialog.realize();
+        dialog.setSize(BootstrapDialog.SIZE_WIDE);
+        dialog.open();
+    }
+
+    function loadPage() {
+        var res = '';
+        var objData = { id: '5' };
+        $.ajaxSetup({async: false});
+        $.post('@Url.Action("BootstrapDialogShow")', objData)
+            .done(function (response) {
+                res = response;
+            });
+        return res;
+    }
+
+</script>

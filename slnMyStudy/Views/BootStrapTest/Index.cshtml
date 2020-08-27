@@ -1,0 +1,75 @@
+﻿
+@{
+    ViewBag.Title = "Table";
+    Layout = "~/Views/Shared/_LayoutCopy.cshtml";
+}
+<style>
+    .vertical-menu {
+
+    }
+
+    .vertical-menu a {
+        background-color: #eee;
+        color: black;
+        display: block;
+        padding: 12px;
+        text-decoration: none;
+    }
+
+    .vertical-menu a:hover {
+        background-color: #ccc;
+    }
+
+    .vertical-menu a.active {
+        background-color: #4CAF50;
+        color: white;
+    }
+</style>
+@section head{}
+@section extra{}
+<article></article>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-2">
+            <div class="vertical-menu">
+                @Html.ActionLink("首頁", "Index", "Home", new { area = "" }, new { @class = "active" })
+                <a  href="javascript:void(0)" onclick="OpenPage('TableTest')">表格</a>
+                <a  href="javascript:void(0)" onclick="OpenPage('BookInfo')">BookInfo</a>
+                <a  href="javascript:void(0)" onclick="OpenPage('CreateBook')">CreateBook</a>
+                <a  href="javascript:void(0)" onclick="OpenPage('MediaInfo')">MediaInfo</a>
+                <a  href="javascript:void(0)" onclick="OpenPage('ListGroup')">ListGroup</a>
+                <a  href="javascript:void(0)" onclick="OpenPage('ButtonGroup')">ButtonGroup</a>
+                <a  href="javascript:void(0)" onclick="OpenPage('NavTest')">NavTest</a>
+                <a  href="javascript:void(0)" onclick="OpenPage('NavBarTest')">NavBarTest</a>
+                <a  href="javascript:void(0)" onclick="OpenPage('CardTest')">CardTest</a>
+                <a  href="javascript:void(0)" onclick="OpenPage('JSModal')">JSModal</a>
+                <a  href="javascript:void(0)" onclick="OpenPage('CarouseTest')">CarouseTest</a>
+                <a  href="javascript:void(0)" onclick="OpenPage('CollapseTest')">CollapseTest</a>
+                <a  href="javascript:void(0)" onclick="OpenPage('CollapseTest2')">CollapseTest2</a>
+                <a  href="javascript:void(0)" onclick="OpenPage('BootstrapDialogTest')">BootstrapDialogTest</a>
+            </div>
+        </div>
+        <div class="col-sm-10">
+            <div id="mainPage" style="left: 0px;">
+                <img src="~/images/B.jpg" />
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        function OpenPage(pageName) {
+            //var objData = { page: 1 };
+            var path = document.getElementById("WebRoot").href;
+            path += "/BootStrapTest/" + pageName;
+            //debugger;
+            //$.post(path/*, objData*/)
+            //    .done(function (response) {
+            //        $("#mainPage").html(response);
+            //    });
+            var str = String.format("<iframe id='testIframe' width=\"{0}\" height=\"{1}\" frameborder=\"0\"  src=\"{2}\"></iframe>", window.innerWidth * 0.75, window.innerHeight, path);
+            $("#mainPage").html(str);
+        }
+    </script>
+}
