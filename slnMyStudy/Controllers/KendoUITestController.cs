@@ -85,6 +85,11 @@ namespace slnMyStudy.Controllers
             return View(testSaveModel);
         }
 
+        public ActionResult ModifyGrid_Popup()
+        {
+            return View();
+        }
+
         [HttpPost]
         public JsonResult GetClassParam(string pName)
         {
