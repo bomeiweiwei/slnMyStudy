@@ -2938,6 +2938,7 @@
     <Content Include="Views\Shared\EditorTemplates\DateTimeTemp.cshtml" />
     <Content Include="Views\KendoUITest\ModifyGrid.cshtml" />
     <Content Include="Views\KendoUITest\ModifyGrid_Popup.cshtml" />
+    <Content Include="Views\KendoUITest\_TestDataEdit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

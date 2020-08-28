@@ -1,0 +1,196 @@
+﻿@model slnMyStudy.Models.ViewModel.TestViewModel
+@{ 
+    Layout = null;
+}
+<style>
+    #cover {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(200, 200, 200, 0.5);
+        z-index: 1;
+    }
+</style>
+<style>
+
+    /*.k-dialog.k-alert .k-dialog-titlebar {
+        background-color: #ff0000;
+        color: #eee;
+    }*/
+
+</style>
+
+@using (Ajax.BeginForm("", "", null,
+    new AjaxOptions
+    {
+        HttpMethod = "POST",
+        Url = Url.HttpRouteUrl("ServiceAreaApi", new { controller = "TestService", action = "SaveData" }),
+        OnSuccess = "OnSuccess",
+        OnFailure = "OnFailure",
+        OnComplete = "OnComplete"
+    }, new { id = "frmCall", @class = "uk-card uk-text-left" }))
+{
+
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+<div class="form-horizontal">
+    <h4>test資料新增</h4>
+    <hr />
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="button" id="KSubmit" value="存檔" />
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.test_time, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.test_time, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.test_time, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.Label("類別", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownList("searchClassName", (IEnumerable<SelectListItem>)ViewBag.ClassDDL, htmlAttributes: new { @class = "form-control" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.title, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.title, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.title, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.summary, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextAreaFor(model => model.summary, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.summary, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.article, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextAreaFor(model => model.article, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.article, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.author, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.author, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.author, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.hit_no, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.hit_no, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.hit_no, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.get_no, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.get_no, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.get_no, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.email_no, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.email_no, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.email_no, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.approved, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.approved, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.approved, "", new { @class = "text-danger" })
+        </div>
+    </div>
+</div>
+}
+
+<div id="cover" style="display:none">
+    <div id="ProcessWindow"></div>
+</div>
+
+<script type="text/javascript">
+    function OnSuccess(result) {
+
+        var kWindow = $("#ProcessWindow").data("kendoWindow");
+        kWindow.close();
+
+        if (result.Success) {
+            window.myalert(result.Message, 1);
+        } else {
+            window.myalert(result.Message, 2);
+        }
+    }
+
+    function OnFailure(xhr, status) {
+        alert('Error: ' + decodeURI(xhr.statusText));
+    }
+
+    function OnComplete(XMLHttpRequest, textStatus) {
+        $("#cover").hide();
+    }
+
+    function myalert(content, success) {
+        var divName = 'showAlert';
+        var iDiv = document.createElement('div');
+        iDiv.id = divName;
+        document.getElementsByTagName('body')[0].appendChild(iDiv);
+        $('#' + divName).kendoAlert({
+            title: "訊息",
+            content: content,
+            width: 400,
+        }).data("kendoAlert").open();
+        if (success == 1)
+            $('#' + divName).parent().find('.k-window-titlebar').css('backgroundColor', '#0094ff');
+        else
+            $('#' + divName).parent().find('.k-window-titlebar').css('backgroundColor', '#ff0000');
+    }
+
+    $(function () {
+        $("#KSubmit").kendoButton();
+        $("#test_time").kendoDatePicker({ format: "yyyy-MM-dd" });
+
+        //kendo window setting
+        $("#ProcessWindow").kendoWindow({
+            width: "100px",
+            height: "100px",
+            title: false,
+            visible: false,
+            close: function (e) {
+                // the closing animation has finished
+            }
+        }).data("kendoWindow");
+        $("#ProcessWindow").parent().find(".k-window-action").css("visibility", "hidden");
+    });
+
+    $("#KSubmit").click(function () {
+
+        $("#cover").show();
+
+        var kWindow = $("#ProcessWindow").data("kendoWindow");
+        kendo.ui.progress(kWindow.element, true);
+        kWindow.center().open();
+
+        $("#frmCall").submit();
+    });
+</script>    
+

@@ -10,6 +10,7 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Xml.Serialization;
 
 namespace slnMyStudy.Controllers
 {
@@ -61,6 +62,26 @@ namespace slnMyStudy.Controllers
         /// <returns></returns>
         public ActionResult Query()
         {
+            ClassDDLOutput();
+            return View(service.GetAll());
+        }
+
+        public ActionResult ModifyGrid()
+        {
+            TestViewModel testSaveModel = new TestViewModel();
+            //testSaveModel.JsonData = JsonConvert.SerializeObject(new List<test>());
+            ClassDDLOutput();
+            return View(testSaveModel);
+        }
+
+        public ActionResult ModifyGrid_Popup()
+        {
+            ClassDDLOutput();
+            return View();
+        }
+
+        void ClassDDLOutput()
+        {
             List<string> ddlItemStr = new List<string>();
             List<string> strList = service.GetAll().Select(m => m.@class).Distinct().ToList();
             foreach (var item in strList)
@@ -75,19 +96,7 @@ namespace slnMyStudy.Controllers
                 }
             }
             ViewBag.ClassDDL = new SelectList(ddlItemStr);
-            return View(service.GetAll());
-        }
 
-        public ActionResult ModifyGrid()
-        {
-            TestViewModel testSaveModel = new TestViewModel();
-            //testSaveModel.JsonData = JsonConvert.SerializeObject(new List<test>());
-            return View(testSaveModel);
-        }
-
-        public ActionResult ModifyGrid_Popup()
-        {
-            return View();
         }
 
         [HttpPost]

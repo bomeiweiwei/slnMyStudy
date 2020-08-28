@@ -19,8 +19,8 @@
     <div class="row">
         <div class="col-xs-12 col-sm-12">
             @*<button type="button" class="btn-info" onclick="funTmpSaveData()">暫存</button>*@
-            <button type="button" id="btn_Update" onclick="funSaveData()">更新</button>
-            <button type="button" id="btn_OpenPage" onclick="funOpenPage()">更新</button>
+            <button type="button" id="btn_Update" onclick="funSaveData()">Grid更新資料</button>
+            <button type="button" id="btn_OpenPage">新增資料</button>
         </div>
     </div>
     <hr/>
@@ -68,6 +68,13 @@
     </div>
 </form>
 
+<div class="k-widget k-window">
+    <div class="k-window-titlebar"></div>
+    <div id="targetWindow" class="k-window-content" style="display:none">
+        @Html.Partial("~/Views/KendoUITest/_TestDataEdit.cshtml")
+    </div>
+</div>
+
 @section scripts{
     <script type="text/javascript">
         function funSaveData() {
@@ -79,10 +86,6 @@
         function funTmpSaveData() {
             ElementsValidRemove();
             DoSave();
-        }
-
-        function funOpenPage() {
-
         }
 
         //日期轉換
@@ -530,7 +533,7 @@
                 },
                 success: function (data, textStatus, xhr) {
                     BootstrapDialog.alert({
-                        message: data,
+                        message: data.Message,
                         type: BootstrapDialog.TYPE_INFO ,
                         callback: function (result) {
                         }
@@ -561,11 +564,19 @@
             $("#_testData").val(JSON.stringify(sObject));
             grid.dataSource.data(ParamObject);
         }
-
+        
         $(function () {
             initHidData();
             initGrid3();
             $("#btn_Update").kendoButton();
+            $("#btn_OpenPage").kendoButton();
+            $("#targetWindow").kendoWindow({
+                width: window.innerWidth * 0.75,
+                height: window.innerHeight * 0.75,
+                title: "新增",
+                visible: false
+            }).data("kendoWindow");
+            
             $("#targetFiles").kendoUpload({
                 async: {
                     saveUrl: "@Url.Action("FilesUpload")",
@@ -584,6 +595,10 @@
                     console.log(e.XMLHttpRequest.response);
                 }
             });
+        });
+        $("#btn_OpenPage").click(function () {
+            var win = $("#targetWindow").data("kendoWindow");
+            win.center().open();
         });
     </script>
 }

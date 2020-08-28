@@ -74,8 +74,10 @@ namespace slnMyStudy.Areas.Service.Controllers
         [HttpPost]
         public IHttpActionResult SaveData(TestSaveModel data)
         {
+            System.Threading.Thread.Sleep(2000);
             testService service = new testService();
-            return Ok("Service預設處理成功");
+            ExecuteResult executeResult = new ExecuteResult() { Success = true, Message = "新增成功" };
+            return Ok(executeResult);
         }
     }
 }
