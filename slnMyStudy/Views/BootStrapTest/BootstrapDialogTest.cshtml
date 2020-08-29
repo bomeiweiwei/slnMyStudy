@@ -155,10 +155,14 @@
         });
 
         dialog.setData('pageToLoad', '@Url.Action("ModifyGrid_Popup", "KendoUITest", new { area = "" })');
-        //dialog.setData('pageParam', '?id=' + 5);
+        dialog.setData('pageParam', '?todo=create');
 
         dialog.realize();
         //dialog.setSize(BootstrapDialog.SIZE_WIDE);
         dialog.open();
+    }
+
+    function closeDialog() {
+        dialog.close();
     }
 </script>

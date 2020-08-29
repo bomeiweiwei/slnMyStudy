@@ -74,9 +74,10 @@ namespace slnMyStudy.Controllers
             return View(testSaveModel);
         }
 
-        public ActionResult ModifyGrid_Popup()
+        public ActionResult ModifyGrid_Popup(string todo)
         {
             ClassDDLOutput();
+            ViewData["popupAction"] = todo;
             return View();
         }
 

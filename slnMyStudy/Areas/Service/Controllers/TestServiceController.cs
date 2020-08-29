@@ -1,6 +1,7 @@
 ﻿using LinqKit;
 using slnMyStudy.Models;
 using slnMyStudy.Models.SaveModel;
+using slnMyStudy.Models.ViewModel;
 using slnMyStudy.Service;
 using System;
 using System.Collections.Generic;
@@ -8,10 +9,11 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using AutoMapper;
 
 namespace slnMyStudy.Areas.Service.Controllers
 {
-    public class TestServiceController : ApiController
+    public class TestServiceController : BaseApiController
     {
         [HttpPost]
         [Obsolete]
@@ -74,9 +76,46 @@ namespace slnMyStudy.Areas.Service.Controllers
         [HttpPost]
         public IHttpActionResult SaveData(TestSaveModel data)
         {
-            System.Threading.Thread.Sleep(2000);
+            ExecuteResult executeResult = new ExecuteResult();
+            //System.Threading.Thread.Sleep(2000);
             testService service = new testService();
-            ExecuteResult executeResult = new ExecuteResult() { Success = true, Message = "新增成功" };
+            //Grid資料一次新增
+            if (data.Test_SaveList!=null && data.Test_SaveList.Any())
+            {
+                List<TestViewModel> addList = data.Test_SaveList.Where(m => m.id < 0).ToList();
+                if (addList.Any())
+                {
+                    executeResult = service.AddListData(addList);
+                    if (executeResult.Success)
+                    {
+                        executeResult.Message = "更新成功";
+                    }
+                    else
+                        executeResult.Message = "更新失敗";
+                }
+                List<TestViewModel> updateList = data.Test_SaveList.Where(m => m.id > 0).ToList();
+                if (updateList.Any())
+                {
+                    executeResult = service.UpdateListData(updateList);
+                    if (executeResult.Success)
+                    {
+                        executeResult.Message = "更新成功";
+                    }
+                    else
+                        executeResult.Message = "更新失敗";
+                }
+            }
+            //單次新增
+            else
+            {
+                executeResult = service.AddData(data);
+                if (executeResult.Success)
+                {
+                    executeResult.Message = "新增成功";
+                }
+                else
+                    executeResult.Message = "新增失敗";
+            }
             return Ok(executeResult);
         }
     }

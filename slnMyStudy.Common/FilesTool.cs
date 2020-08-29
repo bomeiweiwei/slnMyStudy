@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -10,7 +12,7 @@ namespace slnMyStudy.Common
 {
     public class FilesTool
     {
-        public static System.Data.DataTable ReadCsv(HttpPostedFileBase files, int columnCount)
+        public static DataTable ReadCsv(HttpPostedFileBase files, int columnCount)
         {
             System.Data.DataTable dt = new System.Data.DataTable();
             using (StreamReader sr = new StreamReader(files.InputStream))
@@ -47,6 +49,61 @@ namespace slnMyStudy.Common
                 }
             }
             return dt;
+        }
+
+        /// <summary>
+        /// List to DataTable
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        public static DataTable ToDataTable<T>(IList<T> Model)
+        {
+            try
+            {
+                PropertyDescriptorCollection props =
+                TypeDescriptor.GetProperties(typeof(T));
+                DataTable table = new DataTable();
+                for (int i = 0; i < props.Count; i++)
+                {
+                    PropertyDescriptor prop = props[i];
+                    table.Columns.Add(prop.Name, Nullable.GetUnderlyingType(prop.PropertyType) ?? prop.PropertyType);
+                    //if ((prop.PropertyType) == typeof(Nullable<int>))
+                    //{
+                    //    DataColumn dc = table.Columns.Add(prop.Name, typeof(Int32));
+                    //    dc.AllowDBNull = true;
+                    //}
+                    //else if ((prop.PropertyType) == typeof(Nullable<long>))
+                    //{
+                    //    DataColumn dc = table.Columns.Add(prop.Name, typeof(long));
+                    //    dc.AllowDBNull = true;
+                    //}
+                    //else if ((prop.PropertyType) == typeof(Nullable<System.DateTime>))
+                    //{
+                    //    DataColumn dc = table.Columns.Add(prop.Name, typeof(System.DateTime));
+                    //    dc.AllowDBNull = true;
+                    //}
+                    //else
+                    //{
+                    //    table.Columns.Add(prop.Name, prop.PropertyType);
+                    //}
+                }
+                object[] values = new object[props.Count];
+                foreach (T item in Model)
+                {
+                    for (int i = 0; i < values.Length; i++)
+                    {
+                        values[i] = props[i].GetValue(item);
+                    }
+                    table.Rows.Add(values);
+                }
+
+                return table;
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
         }
     }
 }

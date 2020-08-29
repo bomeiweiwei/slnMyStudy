@@ -6,6 +6,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using System.Data.Entity;
 
 namespace slnMyStudy.Service
 {
@@ -77,6 +78,11 @@ namespace slnMyStudy.Service
         public void Dispose()
         {
             serviceModel.GetData.Dispose();
+        }
+
+        public DbContext GetCurrentContext()
+        {
+            return serviceModel.GetData.GetCurrentContext();
         }
     }
 }

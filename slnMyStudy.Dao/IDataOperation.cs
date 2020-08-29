@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
@@ -16,5 +17,6 @@ namespace slnMyStudy.Dao
         int Update(T Item);
         int Delete(T Item);
         void Dispose();
+        DbContext GetCurrentContext();
     }
 }

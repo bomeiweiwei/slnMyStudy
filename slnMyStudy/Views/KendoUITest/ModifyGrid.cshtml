@@ -19,8 +19,8 @@
     <div class="row">
         <div class="col-xs-12 col-sm-12">
             @*<button type="button" class="btn-info" onclick="funTmpSaveData()">暫存</button>*@
-            <button type="button" id="btn_Update" onclick="funSaveData()">Grid更新資料</button>
-            <button type="button" id="btn_OpenPage">新增資料</button>
+            <button type="button" id="btn_Update" onclick="funSaveData()">直接更新Grid資料</button>
+            <button type="button" id="btn_OpenPage">另開視窗新增資料</button>
         </div>
     </div>
     <hr/>
@@ -35,7 +35,7 @@
         </div>
         <div class='col-xs-12 col-sm-6'>
             <div class="form-group">
-                @Html.Label("*欄位二", new { @class = "col-xs-12 col-sm-4 control-label" })
+                @Html.Label("欄位二", new { @class = "col-xs-12 col-sm-4 control-label" })
                 <div class="col-xs-12 col-sm-4 ">
                     @Html.TextBox("TxtBox2", "", new { @class = "form-control", id = "TxtBox2" })
                 </div>
@@ -46,7 +46,7 @@
     <div class="row">
         <div class="col-xs-12 col-sm-12">
             <div class="form-group">
-                @Html.Label("*欄位三", new { @class = "col-xs-12 col-sm-4 control-label" })
+                @Html.Label("欄位三", new { @class = "col-xs-12 col-sm-4 control-label" })
                 <div class="col-xs-12 col-sm-8 ">
                     <textarea id="TxtArea" name="TxtArea" rows="4" cols="50" class="k-textbox"></textarea>
                 </div>
@@ -71,7 +71,8 @@
 <div class="k-widget k-window">
     <div class="k-window-titlebar"></div>
     <div id="targetWindow" class="k-window-content" style="display:none">
-        @Html.Partial("~/Views/KendoUITest/_TestDataEdit.cshtml")
+        @*帶入參數全部重新設定*@
+        @Html.Partial("~/Views/KendoUITest/_TestDataEdit.cshtml", new ViewDataDictionary { { "popupAction", "create" }, { "ClassDDL", ViewBag.ClassDDL } })
     </div>
 </div>
 
@@ -190,7 +191,7 @@
                     }
                 }
             },
-            pageSize: 10,
+            //pageSize: 10,
         });
 
         //Grid查詢參數
@@ -426,7 +427,7 @@
         }
 
         //需要檢查的欄位
-        var elemRequiredArr = ["TxtBox2", "TxtArea"];
+        var elemRequiredArr = [];//["TxtBox2", "TxtArea"];
         //新增需要動態驗證的欄位
         function ElementsValidAdd() {
             $("#myForm").validate({

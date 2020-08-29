@@ -184,7 +184,12 @@ namespace slnMyStudy.Dao
                 {
                     db.Dispose();
                 }
-            }           
+            }
+
+            public DbContext GetCurrentContext()
+            {
+                return db;
+            }
         }
     }
 }

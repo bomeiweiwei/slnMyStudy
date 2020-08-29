@@ -34,7 +34,7 @@ namespace slnMyStudy.WebAPI.Models
             {
                 memguid = tMemberService.FindOne(m => m.Id == username).memguid;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 
             }
