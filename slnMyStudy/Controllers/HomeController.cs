@@ -21,7 +21,7 @@ namespace slnMyStudy.Controllers
         public ActionResult About()
         {
             ViewBag.Message = "Your application description page.";
-
+            ViewBag.Message2 = "Your application description page.";
             return View();
         }
 

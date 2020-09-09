@@ -16,7 +16,11 @@ namespace slnMyStudy.Controllers
         {
             return View();
         }
-
+        /// <summary>
+        /// TableTest
+        /// </summary>
+        /// <param name="page"></param>
+        /// <returns></returns>
         public ActionResult TableTest(int page = 1)
         {
             int pageSize = 10;
@@ -28,12 +32,18 @@ namespace slnMyStudy.Controllers
 
             return View(result);
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public ActionResult BookInfo()
         {
             return View();
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public ActionResult CreateBook()
         {
             return View();
