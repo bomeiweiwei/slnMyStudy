@@ -111,6 +111,16 @@
                     $("#btn" + i).on("click", { index: i }, fnDetail);
                 }
             }
+        })
+        //執行成功
+        .done(function (json) {
+            console.log(json);
+        })
+        //執行失敗
+        .fail(function (xhrmstatus, errorThrown) {
+        })
+        //成功or失敗都執行
+        .always(function (xhr, status) {
         });
     });
 

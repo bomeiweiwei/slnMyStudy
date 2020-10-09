@@ -1850,6 +1850,7 @@
     <Content Include="Scripts\umd\popper-utils.min.js" />
     <Content Include="Scripts\umd\popper.js" />
     <Content Include="Scripts\umd\popper.min.js" />
+    <Content Include="Views\HtmlPage1.html" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -2942,6 +2943,8 @@
     <Content Include="Views\KendoUITest\ModifyGrid.cshtml" />
     <Content Include="Views\KendoUITest\ModifyGrid_Popup.cshtml" />
     <Content Include="Views\KendoUITest\_TestDataEdit.cshtml" />
+    <Content Include="Views\WebApiTest\TestAxios.cshtml" />
+    <Content Include="Views\WebApiTest\TestFetch.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
